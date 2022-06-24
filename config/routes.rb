@@ -1,3 +1,5 @@
+require 'sidekiq/web'
+
 Rails.application.routes.draw do
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
   root "articles#index"
@@ -13,6 +15,8 @@ Rails.application.routes.draw do
   post "login" => "sessions#create"
 
   delete "logout" => "sessions#destroy"
+  
+  mount Sidekiq::Web => '/sidekiq'
   
 
   # Defines the root path route ("/")

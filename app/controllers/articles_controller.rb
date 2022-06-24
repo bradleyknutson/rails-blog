@@ -2,11 +2,15 @@ class ArticlesController < ApplicationController
   # before_action :require_user, only: [:index, :show]
 
   def index
-    @articles = Article.all
+    if params[:search]
+      @articles = Article.search(params[:search]).records
+    else
+      @articles = Article.all
+    end
   end
 
   def show
-    @article = Article.find(params[:id])
+    @article = Article.includes(parent_comments: [:comments, :user]).find(params[:id])
   end
 
   def new

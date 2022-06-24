@@ -1,0 +1,19 @@
+
+<li class="list-group-item">
+  <%= comment.user&.full_name || comment.commenter %>
+  <br>
+  <%= comment.body %>
+  <button type="button" class="btn btn-secondary" data-bs-toggle="collapse" data-bs-target="#comment-<%=comment.id%>" aria-expanded="false" aria-controls="comment-<%=comment.id%>">Reply</button>
+  <div class="collapse" id="comment-<%=comment.id%>">
+    <%= form_for :comment, url: article_comments_path(@article.id) do |f| %>
+      <%= f.text_area :body %><br />
+      <%= f.hidden_field :parent_comment_id, :value => comment.id %>
+      <%= f.submit %>
+    <% end %>
+  </div>
+  <ul class="list-group">
+    <% comment.comments.each do |reply|%>
+      <%= render :partial => "comments/comment", :locals => { :comment => reply } %>
+    <% end %>
+  </ul>
+</li>
